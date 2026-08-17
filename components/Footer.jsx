@@ -8,9 +8,7 @@ export default function Footer() {
         <span>
           © {year} {content.name}
         </span>
-        <span>
-          Built with Next.js, deployed on Vercel
-        </span>
+        <span>Built with Next.js, deployed on Vercel</span>
       </div>
     </footer>
   );

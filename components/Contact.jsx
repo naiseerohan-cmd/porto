@@ -1,4 +1,6 @@
 import { content } from "@/data/content";
+import Reveal from "./Reveal";
+import SectionLabel from "./SectionLabel";
 
 export default function Contact() {
   return (
@@ -7,45 +9,43 @@ export default function Contact() {
         <SectionLabel index="D" label="Say hello" />
 
         <div className="mt-12">
-          <p className="max-w-2xl font-display text-3xl font-medium leading-tight tracking-tight text-chalk-muted sm:text-4xl md:text-5xl">
-            Working on something interesting? I'd love to hear about it.
-            The best way to reach me is by email.
-          </p>
+          <Reveal delay={100}>
+            <p className="max-w-2xl font-display text-3xl font-medium leading-tight tracking-tight text-chalk-muted sm:text-4xl md:text-5xl">
+              Working on something interesting? I'd love to hear about it.
+              The best way to reach me is by email.
+            </p>
+          </Reveal>
 
-          <a
-            href={`mailto:${content.email}`}
-            className="mt-10 inline-flex items-baseline gap-3 font-display text-3xl font-medium tracking-tighter text-neon transition-opacity hover:opacity-80 sm:text-4xl md:text-5xl"
-          >
-            {content.email}
-            <span aria-hidden="true" className="text-2xl">↗</span>
-          </a>
+          <Reveal delay={300}>
+            <a
+              href={`mailto:${content.email}`}
+              className="email-hero mt-10 inline-flex items-baseline gap-3 break-all font-display text-3xl font-medium tracking-tighter text-neon transition-opacity hover:opacity-90 sm:text-4xl md:text-5xl"
+            >
+              {content.email}
+              <span aria-hidden="true" className="text-2xl">
+                ↗
+              </span>
+            </a>
+          </Reveal>
 
-          <ul className="mt-16 flex flex-wrap gap-x-8 gap-y-3 font-mono text-sm">
-            {content.socials.map((social) => (
-              <li key={social.url}>
-                <a
-                  href={social.url}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="neon-link text-chalk-muted transition-colors hover:text-chalk"
-                >
-                  {social.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <Reveal delay={500}>
+            <ul className="mt-16 flex flex-wrap gap-x-8 gap-y-3 font-mono text-sm">
+              {content.socials.map((social) => (
+                <li key={social.url}>
+                  <a
+                    href={social.url}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="neon-link text-chalk-muted transition-colors hover:text-chalk"
+                  >
+                    {social.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
         </div>
       </div>
     </section>
-  );
-}
-
-function SectionLabel({ index, label }) {
-  return (
-    <div className="flex items-center gap-4 font-mono text-xs uppercase tracking-widest text-chalk-muted">
-      <span className="text-neon">[{index}]</span>
-      <span>{label}</span>
-      <span className="h-px flex-1 bg-ink-700" aria-hidden="true" />
-    </div>
   );
 }

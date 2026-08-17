@@ -1,4 +1,6 @@
 import { content } from "@/data/content";
+import Reveal from "./Reveal";
+import SectionLabel from "./SectionLabel";
 
 export default function Stack() {
   return (
@@ -7,8 +9,8 @@ export default function Stack() {
         <SectionLabel index="C" label="Toolkit" />
 
         <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {content.stack.map((group) => (
-            <div key={group.group}>
+          {content.stack.map((group, groupIdx) => (
+            <Reveal key={group.group} delay={groupIdx * 100}>
               <h3 className="mb-4 font-mono text-xs uppercase tracking-widest text-chalk-dim">
                 {group.group}
               </h3>
@@ -16,26 +18,16 @@ export default function Stack() {
                 {group.items.map((item) => (
                   <li
                     key={item}
-                    className="font-display text-lg text-chalk"
+                    className="font-display text-lg text-chalk transition-colors hover:text-neon"
                   >
                     {item}
                   </li>
                 ))}
               </ul>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
     </section>
-  );
-}
-
-function SectionLabel({ index, label }) {
-  return (
-    <div className="flex items-center gap-4 font-mono text-xs uppercase tracking-widest text-chalk-muted">
-      <span className="text-neon">[{index}]</span>
-      <span>{label}</span>
-      <span className="h-px flex-1 bg-ink-700" aria-hidden="true" />
-    </div>
   );
 }

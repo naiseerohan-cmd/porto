@@ -14,12 +14,22 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: var(--font-body), system-ui, sans-serif;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
-/* Subtle dot grid — signature background texture */
+/* Offset for sticky nav on anchor scroll */
+section[id] {
+  scroll-margin-top: 96px;
+}
+
+/* ─── Background textures ───────────────────────────────── */
+
 .dot-grid {
   background-image: radial-gradient(
     circle at 1px 1px,
@@ -29,7 +39,7 @@ body {
   background-size: 24px 24px;
 }
 
-/* Radial spotlight that follows the cursor in the hero */
+/* Cursor-tracking spotlight in hero */
 .spotlight {
   background: radial-gradient(
     500px circle at var(--x, 50%) var(--y, 50%),
@@ -39,7 +49,82 @@ body {
   transition: background 120ms ease;
 }
 
-/* Neon underline that draws in on hover */
+/* Ambient drifting neon orb — slow, blurred, subtle */
+@keyframes orbDrift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(80px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-60px, 40px) scale(0.9);
+  }
+}
+
+.hero-orb {
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(198, 255, 61, 0.13),
+    transparent 60%
+  );
+  filter: blur(60px);
+  animation: orbDrift 22s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ─── Reveal on scroll (used by <Reveal>) ───────────────── */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 900ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Section labels: the horizontal line extends when the label reveals */
+.section-line {
+  transform: scaleX(0);
+  transition: transform 1200ms cubic-bezier(0.16, 1, 0.3, 1) 200ms;
+}
+.reveal-in .section-line {
+  transform: scaleX(1);
+}
+
+/* ─── Hero entry animation (on load, no scroll needed) ──── */
+
+@keyframes heroIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-item {
+  opacity: 0;
+  animation: heroIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.hero-item.d1 { animation-delay: 100ms; }
+.hero-item.d2 { animation-delay: 250ms; }
+.hero-item.d3 { animation-delay: 450ms; }
+.hero-item.d4 { animation-delay: 700ms; }
+.hero-item.d5 { animation-delay: 900ms; }
+
+/* ─── Neon underline for links ──────────────────────────── */
+
 .neon-link {
   position: relative;
   display: inline-block;
@@ -61,15 +146,92 @@ body {
   transform: scaleX(1);
 }
 
-/* Focus ring — accessibility */
+/* ─── Profile portrait ──────────────────────────────────── */
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.profile-frame {
+  animation: float 6s ease-in-out infinite;
+  transition: transform 400ms ease, box-shadow 400ms ease, border-color 400ms ease;
+  will-change: transform;
+}
+
+.profile-frame:hover {
+  transform: scale(1.05) translateY(-2px);
+  border-color: #c6ff3d;
+  box-shadow: 0 0 0 1px rgba(198, 255, 61, 0.35),
+    0 24px 60px -18px rgba(198, 255, 61, 0.45);
+  animation-play-state: paused;
+}
+
+/* ─── Project row hover indicator ───────────────────────── */
+
+.project-row {
+  transition: background-color 300ms ease;
+  position: relative;
+}
+.project-row::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #c6ff3d;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.project-row:hover::before {
+  transform: scaleY(1);
+}
+
+/* ─── Contact email breathing glow ──────────────────────── */
+
+@keyframes emailGlow {
+  0%,
+  100% {
+    text-shadow: 0 0 20px rgba(198, 255, 61, 0.15);
+  }
+  50% {
+    text-shadow: 0 0 30px rgba(198, 255, 61, 0.35);
+  }
+}
+
+.email-hero {
+  animation: emailGlow 4s ease-in-out infinite;
+}
+.email-hero:hover {
+  text-shadow: 0 0 40px rgba(198, 255, 61, 0.6);
+}
+
+/* ─── Focus + selection ─────────────────────────────────── */
+
 *:focus-visible {
   outline: 2px solid #c6ff3d;
   outline-offset: 3px;
   border-radius: 2px;
 }
 
-/* Reduce motion respected */
+::selection {
+  background-color: #c6ff3d;
+  color: #0b0b10;
+}
+
+/* ─── Reduced motion (accessibility + battery on mobile) ── */
+
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   *,
   *::before,
   *::after {
@@ -77,13 +239,19 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .spotlight {
-    background: none;
+  .spotlight,
+  .hero-orb {
+    display: none;
   }
-}
-
-/* Selection styling */
-::selection {
-  background-color: #c6ff3d;
-  color: #0b0b10;
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .section-line {
+    transform: scaleX(1);
+  }
+  .hero-item {
+    opacity: 1;
+    animation: none;
+  }
 }

@@ -15,7 +15,12 @@ export default function Nav() {
           className="font-mono text-sm text-chalk transition-colors hover:text-neon"
           aria-label="Back to top"
         >
-          {content.name.split(" ").map((w) => w[0]).join("").slice(0, 3).toLowerCase()}
+          {content.name
+            .split(" ")
+            .map((w) => w[0])
+            .join("")
+            .slice(0, 3)
+            .toLowerCase()}
           <span className="text-chalk-dim">/portfolio</span>
         </a>
         <ul className="flex items-center gap-1 sm:gap-2">

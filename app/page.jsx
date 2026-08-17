@@ -4,6 +4,7 @@ import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Work from "@/components/Work";
 import Stack from "@/components/Stack";
+import Play from "@/components/Play";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
@@ -17,6 +18,7 @@ export default function HomePage() {
         <About />
         <Work />
         <Stack />
+        <Play />
         <Contact />
       </main>
       <Footer />

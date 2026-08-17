@@ -3,6 +3,7 @@ import { content } from "@/data/content";
 const links = [
   { label: "Work", href: "#work" },
   { label: "About", href: "#about" },
+  { label: "Play", href: "#play" },
   { label: "Contact", href: "#contact" },
 ];
 
